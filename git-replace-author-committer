@@ -1,0 +1,14 @@
+#!/bin/sh
+
+FIND_NAME="`echo $1 | sed "s/'/\\\\'/g"`"
+NAME_REPLACE_WITH="`echo $2 | sed "s/'/\\\\'/g"`"
+EMAIL_REPLACE_WITH="`echo $3 | sed "s/'/\\\\'/g"`"
+
+git filter-branch --env-filter \
+    "if [ \"\$GIT_AUTHOR_NAME\" = '$FIND_NAME' -o \"\$GIT_COMMITTER_NAME\" = '$FIND_NAME' ]
+     then
+         export GIT_AUTHOR_NAME='$NAME_REPLACE_WITH'
+         export GIT_AUTHOR_EMAIL='$EMAIL_REPLACE_WITH'
+         export GIT_COMMITTER_NAME='$NAME_REPLACE_WITH'
+         export GIT_COMMITTER_EMAIL='$EMAIL_REPLACE_WITH'
+     fi"
